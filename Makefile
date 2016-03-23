@@ -1,3 +1,6 @@
+test:
+	bundle exec rspec
+
 build:
 	docker build -t nginx-small-light .
 
