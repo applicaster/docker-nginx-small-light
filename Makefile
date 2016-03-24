@@ -6,6 +6,7 @@ build:
 
 run: build
 	docker run \
+		--name nginx-small-light \
 		--rm \
 		-it \
 		-p 5000:80 \
