@@ -1,4 +1,5 @@
 require "spec_helper"
+require "pry"
 
 Dir[File.join(__dir__, "support/**/*.rb")].each { |f| require f }
 
@@ -16,4 +17,3 @@ RSpec.configure do |config|
     Server.instance.stop
   end
 end
-

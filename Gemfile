@@ -1,6 +1,7 @@
-# A sample Gemfile
 source "https://rubygems.org"
 
-gem "rspec"
 gem "faraday"
+
+gem "rspec"
 gem "pry"
+gem 'rubocop', require: false
