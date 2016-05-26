@@ -1,8 +1,10 @@
 require "faraday"
+require "envyable"
+Envyable.load("./config/env.yml", ENV["TEST"])
 
 class Server
   CONTAINER_NAME = "nginx-small-light-test"
-  SERVER_IP =`docker-machine ip default`.strip
+  SERVER_IP = `docker-machine ip default`.strip
 
   attr_accessor :server_port
 
@@ -18,7 +20,7 @@ class Server
   end
 
   def start
-    `docker build -t nginx-small-light-test .`
+    `docker build -t #{CONTAINER_NAME} .`
 
     `docker kill #{CONTAINER_NAME} 2> /dev/null`
     `docker wait #{CONTAINER_NAME} 2> /dev/null`
@@ -29,25 +31,27 @@ class Server
         -d \
         --name #{CONTAINER_NAME} \
         -p #{server_port}:80 \
-        --env UPSTREAM_BASE_URL="http://s3.amazonaws.com/assets-production.applicaster.com" \
-        nginx-small-light-test
-    `
+        --env UPSTREAM_BASE_URL=#{ENV["UPSTREAM_BASE_URL"]} \
+        #{CONTAINER_NAME}
+    `.strip
   end
 
   def stop
-    `docker kill #{CONTAINER_NAME}`
+    `docker kill #{CONTAINER_NAME}`.strip
   end
 
   def wait_for_server_to_start
     Timeout.timeout(10) do
-      sleep 0.1 while !is_port_open?
+      sleep 0.1 until port_open?
     end
   end
 
-  def is_port_open?
+  def port_open?
     connection.get("/health")
+    puts "Connected"
     true
-  rescue Faraday::ConnectionFailed
+  rescue Faraday::ConnectionFailed => e
+    puts "Waiting for connection... #{e.message}"
   end
 
   def connection
