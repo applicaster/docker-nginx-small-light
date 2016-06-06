@@ -1,4 +1,7 @@
 require "spec_helper"
+require "envyable"
+Envyable.load("./config/env.yml", "test")
+require "pry"
 
 Dir[File.join(__dir__, "support/**/*.rb")].each { |f| require f }
 
@@ -16,4 +19,3 @@ RSpec.configure do |config|
     Server.instance.stop
   end
 end
-

@@ -1,0 +1,88 @@
+inherit_from:
+  - .rubocop_todo.yml
+  - .rubocop.docker-nginx-small-light.yml
+
+AllCops:
+  Exclude:
+    - db/seeds.rb
+    - db/migrate/*
+    - db/schema.rb
+    - script/*
+    - bin/*
+    - Guardfile
+    - Gemfile
+    - Capfile
+    - Rakefile
+    - config.ru
+    - config/boot.rb
+    - config/application.rb
+    - config/environment.rb
+    - config/deploy.rb
+    - config/deploy/*
+    - tmp/**/*
+    - vendor/bundle/**/*
+    - .bundle/**/*
+    - lib/plugins/**/*
+
+  RunRailsCops: true
+
+CollectionMethods:
+  PreferredMethods:
+    find: detect
+    reduce: reduce
+    collect: map
+    find_all: select
+
+Documentation:
+  Enabled: false
+
+#LineLength:
+  #Max: 100
+
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%': '{}'
+
+PredicateName:
+  NamePrefixBlacklist:
+    - is_
+
+StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
+DotPosition:
+  EnforcedStyle: leading
+
+#Metrics/AbcSize:
+  #Max: 25
+
+#Metrics/MethodLength:
+  #Max: 20
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+TrailingComma:
+  EnforcedStyleForMultiline: comma
+
+SingleSpaceBeforeFirstArg:
+  Enabled: false
+
+Style/IndentHash:
+  EnforcedStyle: consistent
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
+
+Style/ClosingParenthesisIndentation:
+  Enabled: false
