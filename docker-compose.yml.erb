@@ -1,0 +1,16 @@
+version: '2'
+services:
+  nginx:
+    build: .
+    ports:
+      - <%= @server_port %>:80
+      - 443
+    environment:
+      UPSTREAM_BASE_URL: <%= "http://"+`docker-machine ip default`.strip+":#{@images_port}" %>
+  image_server:
+    image: cannin/nodejs-http-server
+    ports:
+      - <%= @images_port %>:8080
+    volumes:
+      - ./spec/fixtures:/home
+    command: http-server -od --cors /home

@@ -1,0 +1,49 @@
+AllCops:
+  Exclude:
+    - Gemfile
+
+CollectionMethods:
+  PreferredMethods:
+    find: detect
+    reduce: reduce
+    collect: map
+    find_all: select
+
+Documentation:
+  Enabled: false
+
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%': '{}'
+
+PredicateName:
+  NamePrefixBlacklist:
+    - is_
+
+StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
+DotPosition:
+  EnforcedStyle: leading
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Style/IndentHash:
+  EnforcedStyle: consistent
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
+
+Style/ClosingParenthesisIndentation:
+  Enabled: false
