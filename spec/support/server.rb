@@ -4,7 +4,6 @@ require "erb"
 
 class Server
   CONTAINER_NAME = "nginx-small-light-test".freeze
-  SERVER_IP = `docker-machine ip default`.strip
 
   attr_accessor :server_port
 
@@ -16,6 +15,7 @@ class Server
   end
 
   def initialize
+    @server_ip = server_ip
     @server_port = (5000 + rand(999))
     @images_port = (3000 + rand(999))
   end
@@ -46,7 +46,7 @@ class Server
   end
 
   def connection
-    Faraday.new(url: "http://#{SERVER_IP}:#{server_port}") do |faraday|
+    Faraday.new(url: "http://#{@server_ip}:#{server_port}") do |faraday|
       # faraday.response :logger
       # faraday.response :raise_error
       faraday.adapter Faraday.default_adapter # make requests with Net::HTTP
@@ -58,5 +58,10 @@ class Server
     target = "docker-compose.yml"
     yaml = YAML.load(ERB.new(File.read(template)).result(binding).to_yaml)
     File.write(target, yaml)
+  end
+
+  def server_ip
+    dm = `docker-machine ip 2> /dev/null`.strip
+    dm.empty? ? "hostname -i" : dm
   end
 end
