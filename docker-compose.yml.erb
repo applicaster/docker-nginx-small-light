@@ -6,7 +6,7 @@ services:
       - <%= @server_port %>:80
       - 443
     environment:
-      UPSTREAM_BASE_URL: <%= "http://"+`docker-machine ip default`.strip+":#{@images_port}" %>
+      UPSTREAM_BASE_URL: <%= "http://#{@server_ip}:#{@images_port}" %>
       COMMIT_HASH: <%= `git rev-parse HEAD`.strip %>
   image_server:
     image: cannin/nodejs-http-server
