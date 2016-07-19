@@ -1,7 +1,7 @@
 UPSTREAM_BASE_URL=http://assets-production.applicaster.com.s3.amazonaws.com
 
 test:
-	bundle exec rubocop && bundle exec rspec
+	bundle exec rspec
 
 build:
 	docker build -t nginx-small-light .
