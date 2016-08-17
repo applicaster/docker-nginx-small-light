@@ -1,0 +1,56 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: images
+  labels:
+    project: images
+    role: app-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: images
+      role: app-server
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      name: images
+      labels:
+        project: images
+        role: app-server
+    spec:
+      containers:
+      - name: images
+        image: applicaster/docker-nginx-small-light:latest
+        resources:
+          limits:
+            cpu: 20m
+            memory: 75Mi
+        ports:
+        - name: http
+          containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: images
+  labels:
+    project: images
+    role: app-server
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: http
+  selector:
+    project: images
+    role: app-server
+
