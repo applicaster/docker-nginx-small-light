@@ -15,7 +15,7 @@ run: build
 		-it \
 		-p 5000:80 \
 		--env UPSTREAM_BASE_URL="$(UPSTREAM_BASE_URL)" \
-		"$(CONTAINER_NAME)"
+		"applicaster/$(CONTAINER_NAME)"
 
 push: build
 	docker push "applicaster/$(CONTAINER_NAME)"
