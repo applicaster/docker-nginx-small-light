@@ -26,6 +26,6 @@ WORKDIR /etc/nginx
 EXPOSE 80 443
 
 ENV OMP_NUM_THREADS=1
-ENV TIMESTAMP="<%= `date "+%Y-%m-%d %H:%M %Z"`.strip %>"
+ENV GIT_SHA="<%= `git rev-parse HEAD`.strip %>"
 
 CMD ["nginx", "-g", "daemon off;"]

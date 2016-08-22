@@ -36,10 +36,10 @@ RSpec.describe "Server" do
   end
 
   describe "version" do
-    it "returns date time upto minute" do
+    it "returns git sha" do
       response = server.get("/version")
       expect(response.status).to eq(200)
-      expect(response.body[0..9]).to eq(`date "+%Y-%m-%d"`.strip)
+      expect(response.body).to eq(`git rev-parse HEAD`.strip)
     end
   end
 
