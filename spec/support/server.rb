@@ -15,7 +15,7 @@ class Server
   end
 
   def initialize
-    @host= system("docker-machine ip default") ? `docker-machine ip default`.strip : "localhost"
+    @host = system("docker-machine ip default") ? `docker-machine ip default`.strip : "localhost"
 
     @server_port = (5000 + rand(999))
     @images_port = (3000 + rand(999))
