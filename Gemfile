@@ -4,4 +4,4 @@ gem "faraday"
 
 gem "rspec"
 gem "pry"
-gem 'rubocop', require: false
+gem 'rubocop', '0.46.0', require: false
