@@ -52,3 +52,6 @@ Style/ClosingParenthesisIndentation:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Metrics/LineLength:
+  Max: 100
