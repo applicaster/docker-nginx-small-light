@@ -4,7 +4,6 @@ require "erb"
 
 class Server
   CONTAINER_NAME = "nginx-small-light-test".freeze
-  SERVER_IP = `docker-machine ip default`.strip
 
   attr_accessor :server_port
 
@@ -16,6 +15,8 @@ class Server
   end
 
   def initialize
+    @host= system("docker-machine ip default") ? `docker-machine ip default`.strip : "localhost"
+
     @server_port = (5000 + rand(999))
     @images_port = (3000 + rand(999))
   end
@@ -46,7 +47,7 @@ class Server
   end
 
   def connection
-    Faraday.new(url: "http://#{SERVER_IP}:#{server_port}") do |faraday|
+    Faraday.new(url: "http://#{@host}:#{@server_port}") do |faraday|
       # faraday.response :logger
       # faraday.response :raise_error
       faraday.adapter Faraday.default_adapter # make requests with Net::HTTP

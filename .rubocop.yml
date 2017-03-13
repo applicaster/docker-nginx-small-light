@@ -1,6 +1,8 @@
 AllCops:
+  DisplayCopNames: true
   Exclude:
     - Gemfile
+    - vendor/bundle/**/*
 
 CollectionMethods:
   PreferredMethods:
@@ -46,4 +48,7 @@ Style/BlockDelimiters:
     - 'spec/**/*'
 
 Style/ClosingParenthesisIndentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
   Enabled: false
