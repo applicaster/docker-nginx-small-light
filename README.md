@@ -34,13 +34,13 @@ If you do nothing, you now have to wait 5 mintues because the `ELB` health check
 To speed things up you can dial the ELBs health check period to like 20 seconds
 One the new machines are healthy visit the ELBs [version end-point](http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/version) and if all went well you should now see the new git sha.
 
-Now kill the old machines
+Now kill the old machines (the reason we do it this way is that if the new machines never get healthy we can reattach the old ones)
 - In ECS console filter down to `coreos` and sort by `Launch time`
-- Select and terminate (the reason we do it this way is that if the new machines never get healthy we can reattach the old ones)
+- Select and terminate
 - Remember to dial the health check period back to 300 seconds when you are done
 
 Finally, a manual check that it went well.
-- Send an original image to the resizer, e.g. using [this url](http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/qa/accounts/119/broadcasters/133/categories/20026/image_assets/6603906/original.jpg)
-- Now try to resize it, by [adding the reisze command](http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/qa/accounts/119/broadcasters/133/categories/20026/image_assets/6603906/original.jpg?12345&command=resize&width=100&height=300)
+- Send an original image to the resizer, e.g. using http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/qa/accounts/119/broadcasters/133/categories/20026/image_assets/6603906/original.jpg
+- Now try to resize it by adding the reisze command http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/qa/accounts/119/broadcasters/133/categories/20026/image_assets/6603906/original.jpg?12345&command=resize&width=100&height=300
 - You should be able to visually verify it worked
 
