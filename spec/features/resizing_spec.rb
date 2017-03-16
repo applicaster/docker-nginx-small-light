@@ -107,6 +107,13 @@ RSpec.describe "Server" do
     end
   end
 
+  describe "fill" do
+    it "returns a resized to fill image" do
+      response = server.get("#{image}?command=fill&height=2&width=2")
+      expect(response.headers["content-length"]).to eq("411")
+    end
+  end
+
   after(:each) do
     delete_image(image)
   end
