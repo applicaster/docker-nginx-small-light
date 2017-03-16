@@ -23,15 +23,15 @@ Terraform knows to pull the image with the `production` tag (as you an see [here
 First let's visit the ELBs [version end-point](http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/version) and check the current git sha deployed.
 
 Now we have to get terraform to pull the latest image.
-- In AWS console do to the EC2 service and rename the images-coreos instances to something you can easily recognize
+- In AWS console do to the EC2 service and rename the `images-coreos` instances to something you can easily recognize. e.g `images-coreos-1`, `images-coreos-2`
 - Go to the `images-coreos` autoscaling group.
-- Scale it to the double of the current amount of instances.
+- Scale it to double the current amount of instances.
 - Once the goup has completely scaled detach the instances you previously renamed.
 - Monitor that while strictly working on the new scaled instances there are no issues.
 
-One the new machines are healthy visit the ELBs [version end-point](http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/version) and if all went well you should now see the new git sha.
+Once the new machines are healthy visit the ELBs [version end-point](http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/version) and if all went well you should now see the new git sha.
 
-Now you can terminate the old machines (The ones that were renamed at the beginning of this process): i.e `images-coreos-1`, `images-coreos-2`
+Now you can terminate the old machines (The ones that were renamed at the beginning of this process)
 
 - In ECS console filter down to `coreos` and sort by `name`
 - Select and terminate
