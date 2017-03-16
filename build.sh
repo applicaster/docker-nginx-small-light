@@ -7,8 +7,11 @@ mkdir -p "$workdir"
 
 echo "Setting up ngx_small_light..."
 cd "$workdir"
+
 git clone https://github.com/cubicdaiya/ngx_small_light.git
 cd ngx_small_light
+git checkout -b 0.7.3_version v0.7.3
+
 ./setup
 if [ ! -f config ]
 then
