@@ -23,19 +23,17 @@ Terraform knows to pull the image with the `production` tag (as you an see [here
 First let's visit the ELBs [version end-point](http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/version) and check the current git sha deployed.
 
 Now we have to get terraform to pull the latest image.
-- In AWS console go to the `images-coreos` autoscaling group
-- Select the `instances` tab
-- Click the select-all checkbox
-- From the `Actions` pulldown select `detach`
-- Click the `Add new instances` checkbox
-- Detach
+- In AWS console do to the EC2 service and rename the images-coreos instances to something you can easily recognize
+- Go to the `images-coreos` autoscaling group.
+- Scale it to the double of the current amount of instances.
+- Once the goup has completely scaled detach the instances you previously renamed.
+- Monitor that while strictly working on the new scaled instances there are no issues.
 
-If you do nothing, you now have to wait 5 mintues because the `ELB` health check is set to 300 seconds.
-To speed things up you can dial the ELBs health check period to like 20 seconds
 One the new machines are healthy visit the ELBs [version end-point](http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/version) and if all went well you should now see the new git sha.
 
-Now kill the old machines (the reason we do it this way is that if the new machines never get healthy we can reattach the old ones)
-- In ECS console filter down to `coreos` and sort by `Launch time`
+Now you can terminate the old machines (The ones that were renamed at the beginning of this process): i.e `images-coreos-1`, `images-coreos-2`
+
+- In ECS console filter down to `coreos` and sort by `name`
 - Select and terminate
 - Remember to dial the health check period back to 300 seconds when you are done
 
@@ -43,4 +41,3 @@ Finally, a manual check that it went well.
 - Send an original image to the resizer, e.g. using http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/qa/accounts/119/broadcasters/133/categories/20026/image_assets/6603906/original.jpg
 - Now try to resize it by adding the reisze command http://images-coreos-1451002248.us-east-1.elb.amazonaws.com/qa/accounts/119/broadcasters/133/categories/20026/image_assets/6603906/original.jpg?12345&command=resize&width=100&height=300
 - You should be able to visually verify it worked
-
