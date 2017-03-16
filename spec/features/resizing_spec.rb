@@ -1,15 +1,14 @@
 require "features_helper"
 
 RSpec.describe "Server" do
-  let!(:image) { "resize_test_#{rand(9999)}.png" }
-  let!(:logo) { "applicaster-logo.png" }
-  let!(:hodor) { "hodor.png" }
-
-  before(:each) { copy_image(logo, image) }
-
   describe "resizing" do
     let!(:time_stamp) { "111" }
     let!(:resize_cmd) { "command=resize&width=2&height=2" }
+    let!(:image) { "resize_test_#{rand(9999)}.png" }
+    let!(:logo) { "applicaster-logo.png" }
+    let!(:hodor) { "hodor.png" }
+
+    before(:each) { copy_image(logo, image) }
 
     it "returns an image" do
       response = server.get(image)
@@ -105,10 +104,26 @@ RSpec.describe "Server" do
         end
       end
     end
+
+    after(:each) do
+      delete_image(image)
+    end
   end
 
-  after(:each) do
-    delete_image(image)
+  describe "health" do
+    it "returns health check" do
+      response = server.get("/health")
+      expect(response.status).to eq(200)
+      expect(response.body).to eq("OK")
+    end
+  end
+
+  describe "version" do
+    it "returns date time upto minute" do
+      response = server.get("/version")
+      expect(response.status).to eq(200)
+      expect(response.body[0..9]).to eq(`date "+%Y-%m-%d"`.strip)
+    end
   end
 
   def copy_image(source, target)

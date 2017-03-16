@@ -26,6 +26,6 @@ WORKDIR /etc/nginx
 EXPOSE 80 443
 
 ENV OMP_NUM_THREADS=1
-ENV TIMESTAMP="2016-08-11 10:22 IDT"
+ENV TIMESTAMP="<%= `date "+%Y-%m-%d %H:%M %Z"`.strip %>"
 
 CMD ["nginx", "-g", "daemon off;"]

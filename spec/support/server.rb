@@ -15,6 +15,7 @@ class Server
   end
 
   def initialize
+    @server_ip = server_ip
     @server_port = (5000 + rand(999))
     @images_port = (3000 + rand(999))
     @server_ip ||= server_ip
@@ -22,6 +23,7 @@ class Server
 
   def start
     prep_docker_compose_file
+    prep_dockerfile
     `docker-compose up --build -d`.strip
   end
 
@@ -76,5 +78,12 @@ class Server
 
   def server_ip
     docker_machine_exists? ? docker_machine_ip : linux_docker_ip
+  end
+
+  def prep_dockerfile
+    template = "Dockerfile.erb"
+    target = "Dockerfile"
+    erb = ERB.new(File.read(template)).result(binding)
+    File.write(target, erb)
   end
 end
