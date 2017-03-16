@@ -1,5 +1,11 @@
 machine:
   pre:
-   - sudo pip install docker==2.0.0
-   - sudo pip install docker-compose==1.7.1
-   - sudo service docker start
+    - sudo pip install docker==2.0.0
+    - sudo pip install docker-compose==1.7.1
+    - sudo service docker start
+  ruby:
+    version: 2.3.3
+
+test:
+  override:
+    - make test

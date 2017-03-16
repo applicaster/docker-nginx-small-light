@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - Gemfile
+    - vendor/bundle/**/*
 
 CollectionMethods:
   PreferredMethods:
@@ -47,3 +48,10 @@ Style/BlockDelimiters:
 
 Style/ClosingParenthesisIndentation:
   Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 100
+
