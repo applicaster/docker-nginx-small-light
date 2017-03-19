@@ -61,6 +61,13 @@ class Server
     File.write(target, yaml)
   end
 
+  def prep_dockerfile
+    template = "Dockerfile.erb"
+    target = "Dockerfile"
+    erb = ERB.new(File.read(template)).result(binding)
+    File.write(target, erb)
+  end
+
   def docker_machine_exists?
     system("docker-machine -v")
   end
