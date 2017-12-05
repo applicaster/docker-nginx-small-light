@@ -57,7 +57,7 @@ class Server
   def prep_docker_compose_file
     template = "docker-compose.yml.erb"
     target = "docker-compose.yml"
-    yaml = YAML.load(ERB.new(File.read(template)).result(binding).to_yaml)
+    yaml = YAML.safe_load(ERB.new(File.read(template)).result(binding).to_yaml)
     File.write(target, yaml)
   end
 
