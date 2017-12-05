@@ -30,13 +30,13 @@ Style/StringLiteralsInInterpolation:
 DotPosition:
   EnforcedStyle: leading
 
-Style/AlignParameters:
+Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
-Style/IndentHash:
+Layout/IndentHash:
   EnforcedStyle: consistent
 
 Style/BracesAroundHashParameters:
@@ -46,7 +46,7 @@ Style/BlockDelimiters:
   Exclude:
     - 'spec/**/*'
 
-Style/ClosingParenthesisIndentation:
+Layout/ClosingParenthesisIndentation:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
@@ -54,3 +54,7 @@ Style/FrozenStringLiteralComment:
 
 Metrics/LineLength:
   Max: 100
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
