@@ -1,6 +1,7 @@
 require "faraday"
 require "yaml"
 require "erb"
+require "mkmf"
 
 class Server
   CONTAINER_NAME = "nginx-small-light-test".freeze
@@ -68,12 +69,8 @@ class Server
     File.write(target, erb)
   end
 
-  def docker_machine_exists?
-    system("docker-machine -v")
-  end
-
-  def docker_machine_ip
-    `docker-machine ip default`.strip
+  def linux?
+    find_executable "ip"
   end
 
   def linux_docker_ip
@@ -82,6 +79,6 @@ class Server
   end
 
   def server_ip
-    docker_machine_exists? ? docker_machine_ip : linux_docker_ip
+    linux? ? linux_docker_ip : "127.0.0.1"
   end
 end
