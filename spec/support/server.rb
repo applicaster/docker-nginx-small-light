@@ -1,7 +1,6 @@
 require "faraday"
 require "yaml"
 require "erb"
-require "mkmf"
 
 class Server
   CONTAINER_NAME = "nginx-small-light-test".freeze
