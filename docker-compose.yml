@@ -6,17 +6,17 @@ services:
       nginx_small_light:
         ipv4_address: 192.168.33.2
     ports:
-      - <%= @server_port %>:80
+      - ${NGINX_PORT}:80
       - 443
     environment:
-      UPSTREAM_BASE_URL: <%= "http://192.168.33.1:#{@images_port}" %>
+      UPSTREAM_BASE_URL: http://192.168.33.1:${IMAGES_PORT}
   image_server:
     image: cannin/nodejs-http-server
     networks:
       nginx_small_light:
         ipv4_address: 192.168.33.3
     ports:
-      - <%= @images_port %>:8080
+      - ${IMAGES_PORT}:8080
     volumes:
       - ./spec/fixtures:/home
     command: http-server -od --cors /home

@@ -1,4 +1,3 @@
-docker-compose.yml
 Dockerfile
 /.bundle
 /mkmf.log

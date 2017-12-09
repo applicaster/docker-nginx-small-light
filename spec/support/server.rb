@@ -22,12 +22,11 @@ class Server
   end
 
   def start
-    prep_docker_compose_file
-    `docker-compose up --build -d`.strip
+    `NGINX_PORT=#{@server_port} IMAGES_PORT=#{@images_port} docker-compose up --build -d`.strip
   end
 
   def stop
-    `docker-compose stop`.strip
+    `NGINX_PORT=#{@server_port} IMAGES_PORT=#{@images_port} docker-compose stop`.strip
   end
 
   def wait_for_server_to_start
