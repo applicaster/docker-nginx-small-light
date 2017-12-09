@@ -18,7 +18,6 @@ class Server
   def initialize
     @server_port = (5000 + rand(999))
     @images_port = (3000 + rand(999))
-    @server_ip ||= server_ip
   end
 
   def start
@@ -47,18 +46,11 @@ class Server
   end
 
   def connection
-    Faraday.new(url: "http://#{@server_ip}:#{server_port}") do |faraday|
+    Faraday.new(url: "http://127.0.0.1:#{server_port}") do |faraday|
       # faraday.response :logger
       # faraday.response :raise_error
       faraday.adapter Faraday.default_adapter # make requests with Net::HTTP
     end
-  end
-
-  def prep_docker_compose_file
-    template = "docker-compose.yml.erb"
-    target = "docker-compose.yml"
-    yaml = YAML.safe_load(ERB.new(File.read(template)).result(binding).to_yaml)
-    File.write(target, yaml)
   end
 
   def prep_dockerfile
@@ -66,18 +58,5 @@ class Server
     target = "Dockerfile"
     erb = ERB.new(File.read(template)).result(binding)
     File.write(target, erb)
-  end
-
-  def linux?
-    find_executable "ip"
-  end
-
-  def linux_docker_ip
-    aux = `ip addr show docker0`.split
-    aux[aux.index("inet") + 1].split("/").first.strip
-  end
-
-  def server_ip
-    linux? ? linux_docker_ip : "127.0.0.1"
   end
 end
