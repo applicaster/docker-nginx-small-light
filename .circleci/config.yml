@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    machine:
+      image: circleci/classic:201711-01
+    steps:
+      - checkout
+        # Restore bundle cache
+      - restore_cache:
+          key: nginx-small-light-v1-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle --jobs=4 --retry=3
+
+      # Store bundle cache
+      - save_cache:
+          key: nginx-small-light-v1-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      # Run tests
+      - run: make test
