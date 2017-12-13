@@ -10,7 +10,7 @@ cd "$workdir"
 
 git clone https://github.com/cubicdaiya/ngx_small_light.git
 cd ngx_small_light
-git checkout -b 0.7.3_version v0.7.3
+git checkout -b "${SMALL_LIGHT_VERSION}_version" "v${SMALL_LIGHT_VERSION}"
 
 ./setup
 if [ ! -f config ]
@@ -36,8 +36,11 @@ cd "nginx-${NGINX_VERSION}"
     --with-http_ssl_module \
     --with-http_gzip_static_module \
     --with-http_perl_module \
-    --add-module=$workdir/ngx_small_light
-make
+    --with-threads \
+    --add-module=$workdir/ngx_small_light \
+    --http-log-path=/var/log/nginx/access.log \
+    --error-log-path=/var/log/nginx/error.log
+make -j$(getconf _NPROCESSORS_ONLN)
 make install
 
 
