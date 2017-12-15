@@ -14,24 +14,12 @@ data "aws_acm_certificate" "star_applicaster_com" {
   statuses = ["ISSUED"]
 }
 
-data "terraform_remote_state" "infrastructure" {
+data "terraform_remote_state" "infra" {
   backend = "s3"
 
   config {
     bucket       = "infra.applicaster.com"
     key          = "terraform/us-east-1.tfstate"
-    region       = "${var.region}"
-    role_arn     = "arn:aws:iam::753328315545:role/terraform"
-    session_name = "service-images-terraform"
-  }
-}
-
-data "terraform_remote_state" "infrastructure_ng" {
-  backend = "s3"
-
-  config {
-    bucket       = "infra.applicaster.com"
-    key          = "infrastructure-ng/terraform.tfstate"
     region       = "${var.region}"
     role_arn     = "arn:aws:iam::753328315545:role/terraform"
     session_name = "service-images-terraform"
