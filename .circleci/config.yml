@@ -1,8 +1,13 @@
 version: 2
-jobs:
-  build:
+references:
+  job_defaults: &job_defaults
     machine:
       image: circleci/classic:201711-01
+    working_directory: ~/nginx-small-light
+
+jobs:
+  build:
+    <<: *job_defaults
     steps:
       - checkout
         # Restore bundle cache
@@ -20,3 +25,78 @@ jobs:
 
       # Run tests
       - run: make test
+
+  terraform_init:
+    <<: *job_defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: echo 'export PATH=$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH' >> $BASH_ENV 
+      - restore_cache:
+          key: asdf
+      - run:
+          name: Setup Terraform
+          command: ~/nginx-small-light/.circleci/setup_terraform.sh
+      - save_cache:
+          key: asdf-{{ .Revision }}
+          paths:
+            - ~/.asdf
+      - run: cd terraform && terraform init
+      - persist_to_workspace:
+          root: ~/nginx-small-light/terraform
+          paths:
+            - .terraform
+
+  terraform_plan:
+    <<: *job_defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: echo 'export PATH=$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH' >> $BASH_ENV 
+      - restore_cache:
+          key: asdf
+      - run:
+          name: Copy init data from workspace
+          command: cp -r /tmp/workspace/.terraform ~/nginx-small-light/terraform/.terraform
+      - run:
+          name: Terraform plan
+          command: cd terraform && terraform plan -out=.terraform/tfplan
+      - persist_to_workspace:
+          root: ~/nginx-small-light/terraform
+          paths:
+            - .terraform
+
+ terraform_apply:
+    <<: *job_defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: echo 'export PATH=$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH' >> $BASH_ENV 
+      - restore_cache:
+          key: asdf
+      - run:
+          name: Copy plan from workspace
+          command: cp -r /tmp/workspace/.terraform ~/nginx-small-light/terraform/.terraform
+      - run:
+          name: Terraform apply
+          command: cd terraform && terraform apply .terraform/tfplan
+
+workflows:
+  version: 2
+  build_init_plan_approve_apply:
+    jobs:
+      - build
+      - terraform_init
+      - terraform_plan:
+          requires:
+            - terraform_init
+      - approve_terraform_plan:
+          type: approval
+          requires:
+            - terraform_plan
+      - terraform_apply:
+          requires:
+            - approve_terraform_plan
