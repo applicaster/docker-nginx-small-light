@@ -1,13 +1,9 @@
 version: 2
-references:
-  job_defaults: &job_defaults
+jobs:
+  build:
     machine:
       image: circleci/classic:201711-01
     working_directory: ~/nginx-small-light
-
-jobs:
-  build:
-    <<: *job_defaults
     steps:
       - checkout
         # Restore bundle cache
@@ -27,7 +23,9 @@ jobs:
       - run: make test
 
   terraform_init:
-    <<: *job_defaults
+    machine:
+      image: circleci/classic:201711-01
+    working_directory: ~/nginx-small-light
     steps:
       - checkout
       - attach_workspace:
@@ -49,7 +47,9 @@ jobs:
             - .terraform
 
   terraform_plan:
-    <<: *job_defaults
+    machine:
+      image: circleci/classic:201711-01
+    working_directory: ~/nginx-small-light
     steps:
       - checkout
       - attach_workspace:
@@ -69,7 +69,9 @@ jobs:
             - .terraform
 
  terraform_apply:
-    <<: *job_defaults
+    machine:
+      image: circleci/classic:201711-01
+    working_directory: ~/nginx-small-light
     steps:
       - checkout
       - attach_workspace:
@@ -89,14 +91,14 @@ workflows:
   default:
     jobs:
       - build
-      #- terraform_init
-      #- terraform_plan:
-          #requires:
-            #- terraform_init
-      #- approve_terraform_plan:
-          #type: approval
-          #requires:
-            #- terraform_plan
-      #- terraform_apply:
-          #requires:
-            #- approve_terraform_plan
+      - terraform_init
+      - terraform_plan:
+          requires:
+            - terraform_init
+      - approve_terraform_plan:
+          type: approval
+          requires:
+            - terraform_plan
+      - terraform_apply:
+          requires:
+            - approve_terraform_plan
