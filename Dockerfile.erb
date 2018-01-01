@@ -1,7 +1,8 @@
-FROM alpine:3.1
+FROM alpine:3.3
 
-ENV NGINX_VERSION="1.9.12"
-ENV NGINX_SHA="5945a0701f0ee0755fd20643f755507996a3f7f3"
+ENV NGINX_VERSION="1.12.2"
+ENV NGINX_SHA="6b41d63befa4f52b0724b533e6292a6671b71fdc"
+ENV SMALL_LIGHT_VERSION="0.9.2"
 
 RUN apk --update add \
     git \
@@ -21,7 +22,14 @@ RUN sh /tmp/build.sh \
 
 RUN mkdir -p /var/nginx/cache
 ADD files/nginx.conf /etc/nginx/nginx.conf
+
 WORKDIR /etc/nginx
+
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
+
+VOLUME ["/var/log/nginx"]
 
 EXPOSE 80 443
 
