@@ -1,2 +1,4 @@
 Dockerfile
 /.bundle
+/terraform/.terraform
+/terraform/terraform.tfstate.backup
