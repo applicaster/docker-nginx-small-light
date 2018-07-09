@@ -63,6 +63,7 @@ resource "aws_route53_record" "images" {
   name    = "images"
   type    = "CNAME"
   ttl     = "300"
+  allow_overwrite = false
   records = ["images.applicaster.com.edgekey.net"]
 }
 
